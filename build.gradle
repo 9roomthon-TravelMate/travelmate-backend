@@ -38,19 +38,23 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+def dockerhubUsername = System.getenv("DOCKERHUB_USERNAME") ?: "defaultUsername"
+def dockerhubPassword = System.getenv("DOCKERHUB_PASSWORD") ?: "defaultPassword"
+def targetImageName = System.getenv("IMAGE_NAME") ?: "defaultImageName"
+
 jib {
 	from {
 		image = "eclipse-temurin:17-jre"
 		auth {
-			username = System.getenv("DOCKERHUB_USERNAME")
-			password = System.getenv("DOCKERHUB_PASSWORD")
+			username = dockerhubUsername
+			password = dockerhubPassword
 		}
 	}
 	to {
-		image = System.getenv("IMAGE_NAME")
+		image = targetImageName
 		auth {
-			username = System.getenv("DOCKERHUB_USERNAME")
-			password = System.getenv("DOCKERHUB_PASSWORD")
+			username = dockerhubUsername
+			password = dockerhubPassword
 		}
 	}
 	container {
