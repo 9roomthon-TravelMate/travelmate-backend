@@ -65,8 +65,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             cd travelmate
-            docker compose pull backend
-            docker compose up backend -d
+            sudo docker compose pull backend
+            sudo docker compose up backend -d
 
       - name: Remove public IP from EC2 security group
         run: aws ec2 revoke-security-group-ingress --group-id ${{ secrets.EC2_SECURITY_GROUP_ID }} --protocol tcp --port ${{ secrets.EC2_SSH_PORT }} --cidr ${{ steps.ip.outputs.ipv4 }}/32
