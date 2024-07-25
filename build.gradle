@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.google.cloud.tools.jib' version '3.4.3'
 }
 
 group = 'travelmate'
@@ -54,4 +55,29 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+def dockerhubUsername = System.getenv("DOCKERHUB_USERNAME") ?: "defaultUsername"
+def dockerhubPassword = System.getenv("DOCKERHUB_PASSWORD") ?: "defaultPassword"
+def targetImageName = System.getenv("IMAGE_NAME") ?: "defaultImageName"
+
+jib {
+	from {
+		image = "eclipse-temurin:17-jre"
+		auth {
+			username = dockerhubUsername
+			password = dockerhubPassword
+		}
+	}
+	to {
+		image = targetImageName
+		auth {
+			username = dockerhubUsername
+			password = dockerhubPassword
+		}
+	}
+	container {
+		jvmFlags = ["-Dspring.profiles.active=prod"]
+		creationTime = "USE_CURRENT_TIMESTAMP"
+	}
 }
