@@ -15,24 +15,26 @@ import java.util.List;
 
 @Service
 public class PostService {
-
     @Autowired
     private PostRepository postRepository;
-
     @Autowired
     private ImgStorageService imgStorageService;
 
-    public Post create(PostDto postDto, MultipartFile image) throws IOException {
+    public Post create(PostDto postDto, List<MultipartFile> image) throws IOException {
+        //이미지 리스트 저장
         List<PostImage> images = new ArrayList<>();
-        if (image !=null && !image.isEmpty()) {
-            String saveName = imgStorageService.storeFile(image);
-            String filePath = "img_dir/" + saveName;
-            PostImage img = PostImage.builder()
-                    .originalImageName(image.getOriginalFilename())
-                    .saveImageName(saveName)
-                    .filePath(filePath)
-                    .build();
-            images.add(img);
+        //이미지가 있을때의 로직
+        if (image != null) {
+            for (MultipartFile file : image) {
+                String saveName = imgStorageService.storeFile(file);
+                String filePath = "img_dir/" + saveName;
+                PostImage img = PostImage.builder()
+                        .originalImageName(file.getOriginalFilename())
+                        .saveImageName(saveName)
+                        .filePath(filePath)
+                        .build();
+                images.add(img);
+            }
         }
 
         Post post = Post.builder()
@@ -46,6 +48,5 @@ public class PostService {
         images.forEach(img -> img.setPost(post));
         Post savepost = postRepository.save(post);
         return savepost;
-
         }
     }

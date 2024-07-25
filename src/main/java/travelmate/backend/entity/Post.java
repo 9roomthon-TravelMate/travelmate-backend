@@ -25,13 +25,14 @@ public class Post {
     @Lob
     private String content;
 
+    @Column(nullable = true)
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<PostImage> images;
 
     @ElementCollection
     @CollectionTable(name = "post_hashtags", joinColumns = @JoinColumn(name = "post_id"))
-    @Column(name = "hashtag")
+    @Column(name = "hashtag", nullable = true)
     private List<String> hashtags;
 
     private LocalDateTime createdAt;

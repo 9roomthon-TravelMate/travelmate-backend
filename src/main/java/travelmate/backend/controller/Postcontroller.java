@@ -14,6 +14,7 @@ import travelmate.backend.repository.PostRepository;
 import travelmate.backend.service.PostService;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/post")
@@ -28,11 +29,10 @@ public class Postcontroller {
     @PostMapping("/create")
     public ResponseEntity<Post> createpost(
             @RequestPart("post") PostDto postDto,
-            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+            @RequestPart(value = "file", required = false) List<MultipartFile> file) throws IOException {
 
         Post createdpost = postService.create(postDto, file);
         return ResponseEntity.ok(createdpost);
-
     }
 
 }

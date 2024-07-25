@@ -16,7 +16,8 @@ public class ImgStorageService {
 
     public void fileStorageService() {
         try {
-            // upload-dir 폴더가 존재하지 않으면 생성
+            // 지정된 디렉토리 경로가 존재하지 않을 경우에만 디렉토리를 생성
+            // 만약 경로가 이미 존재하면 아무 작업도 하지 않고, 예외도 발생시키지 않음
             Files.createDirectories(this.fileStorageLocation);
         } catch (Exception ex) {
             throw new RuntimeException("Could not create the directory where the uploaded files will be stored.", ex);
