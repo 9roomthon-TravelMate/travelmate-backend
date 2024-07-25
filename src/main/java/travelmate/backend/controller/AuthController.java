@@ -14,7 +14,7 @@ import travelmate.backend.repository.UserRepository;
 import java.util.HashMap;
 
 @Controller
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

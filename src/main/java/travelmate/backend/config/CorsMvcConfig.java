@@ -12,7 +12,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
 
         corsRegistry.addMapping("/**")
                 .exposedHeaders("Set-Cookie")
-                .allowedOrigins("http://localhost:3000");
+                .allowedOrigins("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com", "http://localhost:3000");
     }
 
 }

@@ -20,6 +20,7 @@ import travelmate.backend.oauth2.CustomSuccessHandler;
 import travelmate.backend.service.CustomOAuth2UserService;
 
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,7 +42,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
