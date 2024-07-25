@@ -67,6 +67,11 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login/**", "/oauth2/**", "/api/oauth2/**", "/api/login/**", "/my/**").permitAll()
+                        .anyRequest().authenticated());
+
         //JWTFilter 추가
         http
                 .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
@@ -82,11 +87,6 @@ public class SecurityConfig {
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler));
-
-        http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login/**", "/oauth2/**", "/api/oauth2/**", "/api/login/**", "/my/**").permitAll()
-                        .anyRequest().authenticated());
 
         http
                 .sessionManagement((session) -> session
