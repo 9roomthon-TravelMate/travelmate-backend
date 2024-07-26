@@ -42,8 +42,8 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com:3000"));
-//                        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com", "http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com:3000"));
+//                        configuration.setAllowedOrigins(Collections.singletonList("*"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -69,7 +69,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login/**", "/oauth2/**", "/api/oauth2/**", "/api/login/**", "/my/**").permitAll()
+                        .requestMatchers("/api/oauth2/**", "/api/login/**").permitAll()
                         .anyRequest().authenticated());
 
         //JWTFilter 추가
@@ -81,9 +81,8 @@ public class SecurityConfig {
                         // 기본 OAuth2 인증 요청 경로를 정의하는 상수 "/oauth2/authorization"에서 사용자 정의 경로로 커스터마이징
                         .authorizationEndpoint(oAuth2 -> oAuth2
                                 .baseUri("/api/oauth2/authorization"))
-//                        .redirectionEndpoint(oAuth2 -> oAuth2
-//                                .baseUri("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/api/login/oauth2/code/**"))
-//                        //
+//                        .redirectionEndpoint(oAuth2 -> oAuth2.baseUri("/api/oauth2/code/*"))
+                        //
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler));
