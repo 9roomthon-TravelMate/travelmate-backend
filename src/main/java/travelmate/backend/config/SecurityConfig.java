@@ -42,8 +42,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com", "http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com:3000"));
-//                        configuration.setAllowedOrigins(Collections.singletonList("*"));
+                        configuration.setAllowedOrigins(List.of("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
