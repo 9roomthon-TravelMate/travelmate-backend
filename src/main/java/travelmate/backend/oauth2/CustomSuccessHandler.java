@@ -39,7 +39,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         response.addCookie(createCookie("Authorization", token));
 //        response.sendRedirect("http://localhost:3000/");
-        response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com:3000");
+        response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com");
     }
 
     private Cookie createCookie(String key, String value) {
