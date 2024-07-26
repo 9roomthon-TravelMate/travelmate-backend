@@ -42,7 +42,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(List.of("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -78,8 +78,8 @@ public class SecurityConfig {
         http
                 .oauth2Login((oauth2) -> oauth2
                         // 기본 OAuth2 인증 요청 경로를 정의하는 상수 "/oauth2/authorization"에서 사용자 정의 경로로 커스터마이징
-                        .authorizationEndpoint(oAuth2 -> oAuth2
-                                .baseUri("/api/oauth2/authorization"))
+//                        .authorizationEndpoint(oAuth2 -> oAuth2
+//                                .baseUri("/api/oauth2/authorization"))
 //                        .redirectionEndpoint(oAuth2 -> oAuth2.baseUri("/api/oauth2/code/*"))
                         //
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
