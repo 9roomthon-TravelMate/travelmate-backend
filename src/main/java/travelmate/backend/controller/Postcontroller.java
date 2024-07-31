@@ -3,10 +3,7 @@ package travelmate.backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import travelmate.backend.dto.PostDto;
 import travelmate.backend.entity.Post;
@@ -33,6 +30,28 @@ public class Postcontroller {
 
         Post createdpost = postService.create(postDto, file);
         return ResponseEntity.ok(createdpost);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Post> updatepost(
+            @RequestParam("postId") Long postid,
+            @RequestPart("post") PostDto postDto,
+            @RequestPart(value = "file", required = false) List<MultipartFile> file) throws IOException {
+
+        Post updatedpost = postService.update(postid, postDto, file);
+        return ResponseEntity.ok(updatedpost);
+    }
+
+    @GetMapping("/read")
+    public ResponseEntity<Post> readpost(@RequestParam("postid") Long postid) {
+        Post getpost = postService.read(postid);
+        return ResponseEntity.ok(getpost);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteepost(@RequestParam("postid") Long postid) {
+        postService.delete(postid);
+        return ResponseEntity.ok("delete");
     }
 
 }

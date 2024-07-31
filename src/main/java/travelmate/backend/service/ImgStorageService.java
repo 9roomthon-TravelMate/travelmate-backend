@@ -2,6 +2,7 @@ package travelmate.backend.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import travelmate.backend.entity.PostImage;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +37,24 @@ public class ImgStorageService {
             return saveName;
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file " + file.getOriginalFilename() + ". Please try again!", ex);
+        }
+    }
+
+    public void deleteFile(PostImage file) {
+        Path path = Paths.get(file.getFilePath());
+
+        // 로그를 통해 경로 확인
+        System.out.println("Attempting to delete file: " + path.toAbsolutePath());
+
+        try {
+            if (Files.exists(path)) {
+                Files.delete(path);
+                System.out.println("File successfully deleted: " + path.toAbsolutePath());
+            } else {
+                System.out.println("File not found: " + path.toAbsolutePath());
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException("Could not delete file ", ex);
         }
     }
 
