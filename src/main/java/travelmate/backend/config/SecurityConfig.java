@@ -84,6 +84,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(prependContextPath("/oauth2/**", "/login/**")).permitAll()
+                        .requestMatchers(prependContextPath("/tourspot/**", "/tourspots/**")).permitAll()
                         .anyRequest().authenticated());
 
         //JWTFilter 추가
