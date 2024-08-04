@@ -1,4 +1,19 @@
 spring:
+  application:
+    name: TravelMate
   profiles:
-    active:
-      - local
+    active: local
+  jackson:
+    deserialization:
+      UNWRAP_ROOT_VALUE: true
+
+tour-api:
+  korean-info:
+    base-url: ${TOUR_API_KOR_INFO_BASE_URL}
+    service-key: ${TOUR_API_KOR_INFO_SERVICE_KEY}
+  english-info:
+    base-url: ${TOUR_API_ENG_INFO_BASE_URL}
+    service-key: ${TOUR_API_ENG_INFO_SERVICE_KEY}
+  photo-gallery:
+    base-url: ${TOUR_API_PHOTO_GALLERY_BASE_URL}
+    service-key: ${TOUR_API_PHOTO_GALLERY_SERVICE_KEY}

@@ -3,6 +3,7 @@ package travelmate.backend.config;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -24,12 +25,26 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
+
+    @Value("${server.servlet.context-path:}")
+    private String contextPath;
+    
+    private String[] prependContextPath(String... paths) {
+        if (contextPath.isEmpty() || contextPath.equals("/")) {
+            return paths;
+        }
+        String[] newPaths = new String[paths.length];
+        for (int i = 0; i < paths.length; ++i) {
+            newPaths[i] = contextPath + paths[i];
+        }
+        return newPaths;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -68,7 +83,8 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/oauth2/**", "/api/login/**").permitAll()
+                        .requestMatchers(prependContextPath("/oauth2/**", "/login/**")).permitAll()
+                        .requestMatchers(prependContextPath("/tourspot/**", "/tourspots/**")).permitAll()
                         .anyRequest().authenticated());
 
         //JWTFilter 추가
