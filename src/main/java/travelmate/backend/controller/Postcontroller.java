@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import travelmate.backend.dto.PostDeleteDto;
 import travelmate.backend.dto.PostDto;
+import travelmate.backend.dto.PostReadDto;
 import travelmate.backend.entity.Post;
 import travelmate.backend.repository.PostRepository;
 import travelmate.backend.service.PostService;
@@ -42,15 +44,24 @@ public class Postcontroller {
         return ResponseEntity.ok(updatedpost);
     }
 
+
+
     @GetMapping("/read")
-    public ResponseEntity<Post> readpost(@RequestParam("postid") Long postid) {
-        Post getpost = postService.read(postid);
+    public ResponseEntity<Post> readpost(@RequestParam("postid") PostReadDto postReadDto) {
+        Post getpost = postService.read(postReadDto);
         return ResponseEntity.ok(getpost);
     }
 
+    //user랑 연결되면 user id 값으로 받기
+    @GetMapping("/readlists")
+    public ResponseEntity<List<Post>> readlist() {
+        List<Post> readlist = postService.readlist();
+        return ResponseEntity.ok(readlist);
+    }
+
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteepost(@RequestParam("postid") Long postid) {
-        postService.delete(postid);
+    public ResponseEntity<String> deleteepost(@RequestParam("postid")PostDeleteDto postDeleteDto) {
+        postService.delete(postDeleteDto);
         return ResponseEntity.ok("delete");
     }
 

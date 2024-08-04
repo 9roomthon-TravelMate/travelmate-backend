@@ -3,7 +3,9 @@ package travelmate.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import travelmate.backend.dto.PostDeleteDto;
 import travelmate.backend.dto.PostDto;
+import travelmate.backend.dto.PostReadDto;
 import travelmate.backend.entity.Post;
 import travelmate.backend.entity.PostImage;
 import travelmate.backend.repository.PostImageRepository;
@@ -92,16 +94,24 @@ public class PostService {
         return post;
     }
 
-    public Post read(Long postid) {
-        Optional<Post> optionalPost = postRepository.findById(postid);
+    public Post read(PostReadDto postReadDto) {
+        Optional<Post> optionalPost = postRepository.findById(postReadDto.getId());
         if (!optionalPost.isPresent()) {
             throw new RuntimeException("Post not found");
         }
         Post findpost = optionalPost.get();
         return findpost;
     }
-    public void delete(Long postid) {
-        Optional<Post> optionalPost = postRepository.findById(postid);
+
+    //user랑 연동하고 나면 findAllbyId() 옵션으로 변경하기
+    public List<Post> readlist() {
+        List<Post> getlists = postRepository.findAll();
+        return getlists;
+    }
+
+
+    public void delete(PostDeleteDto postDeleteDto) {
+        Optional<Post> optionalPost = postRepository.findById(postDeleteDto.getId());
         if (!optionalPost.isPresent()) {
             throw new RuntimeException("Post not found");
         }
