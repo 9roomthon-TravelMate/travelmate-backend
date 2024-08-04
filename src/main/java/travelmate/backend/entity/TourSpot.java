@@ -18,8 +18,8 @@ import java.util.List;
         @Index(name = "uniqueContentIdIndex", columnList = "content_id", unique = true),
         @Index(name = "nameIndex", columnList = "name"),
         @Index(name = "tourSpotThemeIndex", columnList = "tour_spot_theme_id"),
-        @Index(name = "regionIndex", columnList = "region_id"),
-        @Index(name = "districtIndex", columnList = "district_id")
+        @Index(name = "regionIndex", columnList = "tour_region_id"),
+        @Index(name = "districtIndex", columnList = "tour_district_id")
 })
 public class TourSpot {
 
@@ -40,11 +40,11 @@ public class TourSpot {
     private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "region_id")
+    @JoinColumn(name = "tour_region_id")
     private TourRegion region;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "district_id")
+    @JoinColumn(name = "tour_district_id")
     private TourDistrict district;
 
     @ManyToOne(fetch = FetchType.LAZY)
