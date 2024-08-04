@@ -13,7 +13,7 @@ public interface TourSpotRepository extends JpaRepository<TourSpot, Long> {
     @Query("SELECT ts FROM TourSpot ts " +
             "WHERE (:regionId IS NULL OR ts.region.id = :regionId)" +
             "AND (:districtId IS NULL OR ts.district.id = :districtId)" +
-            "AND (:themeId IS NULL OR ts.themeDetail.id = :themeId)")
+            "AND ((:themeId is null AND ts.themeDetail.id is not null) OR ts.themeDetail.id = :themeId)")
     Page<TourSpot> findByFilter(Long regionId, Long districtId, Long themeId, Pageable pageable);
 
     List<TourSpot> findAllByContentIdIn(Iterable<String> contentIds);
