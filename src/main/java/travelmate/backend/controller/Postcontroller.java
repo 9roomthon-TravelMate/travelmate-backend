@@ -44,8 +44,6 @@ public class Postcontroller {
         return ResponseEntity.ok(updatedpost);
     }
 
-
-
     @GetMapping("/read")
     public ResponseEntity<Post> readpost(@RequestParam("postid") PostReadDto postReadDto) {
         Post getpost = postService.read(postReadDto);
