@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.google.cloud.tools.jib' version '3.4.3'
 }
 
 group = 'travelmate'
@@ -24,15 +25,59 @@ repositories {
 }
 
 dependencies {
+	//
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	compileOnly 'org.projectlombok:lombok'
+	//
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// add
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
+
+	// oAuth
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+def dockerhubUsername = System.getenv("DOCKERHUB_USERNAME") ?: "defaultUsername"
+def dockerhubPassword = System.getenv("DOCKERHUB_PASSWORD") ?: "defaultPassword"
+def targetImageName = System.getenv("IMAGE_NAME") ?: "defaultImageName"
+
+jib {
+	from {
+		image = "eclipse-temurin:17-jre"
+		auth {
+			username = dockerhubUsername
+			password = dockerhubPassword
+		}
+	}
+	to {
+		image = targetImageName
+		auth {
+			username = dockerhubUsername
+			password = dockerhubPassword
+		}
+	}
+	container {
+		jvmFlags = ["-Dspring.profiles.active=prod", "-Duser.timezone=\"Asia/Seoul\""]
+		creationTime = "USE_CURRENT_TIMESTAMP"
+	}
 }
