@@ -2,6 +2,7 @@ package travelmate.backend.dto;
 
 import travelmate.backend.entity.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,8 @@ public record TourSpotDetailDto(
         Long id,
         String name,
         String address,
+        BigDecimal latitude,
+        BigDecimal longitude,
         Long regionId,
         Long districtId,
         Long themeId,
@@ -22,6 +25,8 @@ public record TourSpotDetailDto(
                 tourSpot.getId(),
                 tourSpot.getName(),
                 tourSpot.getAddress(),
+                tourSpot.getLatitude(),
+                tourSpot.getLongitude(),
                 Optional.ofNullable(tourSpot.getRegion())
                         .map(TourRegion::getId).orElse(null),
                 Optional.ofNullable(tourSpot.getDistrict())
