@@ -3,9 +3,6 @@ spring:
     name: TravelMate
   profiles:
     active: local
-  jackson:
-    deserialization:
-      UNWRAP_ROOT_VALUE: true
 
 tour-api:
   korean-info:

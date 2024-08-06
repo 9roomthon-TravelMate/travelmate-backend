@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import travelmate.backend.dto.tourApi.item.TourApiTourInfo;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,12 @@ public class TourSpot {
     private String name;
 
     private String address;
+
+    @Column(precision = 12, scale = 10)
+    private BigDecimal latitude;
+
+    @Column(precision = 13, scale = 10)
+    private BigDecimal longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tour_region_id")
@@ -78,6 +85,8 @@ public class TourSpot {
         this.contentTypeId = tourApiTourInfo.contenttypeid();
         this.name = tourApiTourInfo.title();
         this.address = tourApiTourInfo.addr1();
+        this.latitude = new BigDecimal(tourApiTourInfo.mapy());
+        this.longitude = new BigDecimal(tourApiTourInfo.mapx());
         this.mainImageUrl = tourApiTourInfo.firstimage();
         this.mainThumbnailUrl = tourApiTourInfo.firstimage2();
         this.category1 = tourApiTourInfo.cat1();
