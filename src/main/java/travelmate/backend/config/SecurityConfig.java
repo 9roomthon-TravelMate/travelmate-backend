@@ -44,6 +44,7 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
 
                         configuration.setAllowedOrigins(Collections.singletonList("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com"));
+                        configuration.setAllowedOriginPatterns(Collections.singletonList("http://localhost:*"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -70,7 +71,6 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/oauth2/**", "/login/**").permitAll()
-                        .requestMatchers("/tourspot/**", "/tourspots/**").permitAll()
                         .anyRequest().authenticated());
 
         //JWTFilter 추가
