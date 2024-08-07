@@ -8,4 +8,6 @@ import travelmate.backend.entity.Member;
 public interface UserRepository extends JpaRepository<Member, Long> {
 
     Member findByUsername (String username);
+
+    void deleteByUsername(String username);
 }

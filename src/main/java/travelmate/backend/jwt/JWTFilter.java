@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import travelmate.backend.dto.CustomOAuth2User;
 import travelmate.backend.dto.UserDTO;
+import travelmate.backend.entity.Member;
+import travelmate.backend.repository.UserRepository;
 
 import java.io.IOException;
 
@@ -19,7 +21,7 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
-
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -58,10 +60,16 @@ public class JWTFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
+        //유저 정보 불러오기
+        Member member = userRepository.findByUsername(username);
+
         //userDTO를 생성하여 값 set
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername(username);
         userDTO.setRole(role);
+        userDTO.setNickname(member.getNickname());
+        userDTO.setProfile_image(member.getProfileImage());
+
 
         //UserDetails에 회원 정보 객체 담기
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
