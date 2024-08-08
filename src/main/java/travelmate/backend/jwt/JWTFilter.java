@@ -43,6 +43,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 메소드 종료 (필수)
+            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
             return;
         }
 
@@ -53,6 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 메소드 종료 (필수)
+            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
             return;
         }
 
