@@ -23,4 +23,5 @@ public class Member {
     private String profileImage;
 
     private String role;
+
 }
