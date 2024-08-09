@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import travelmate.backend.dto.tourApi.item.TourApiTourInfo;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,8 +68,7 @@ public class TourSpot {
     @OneToMany(mappedBy = "tourSpot")
     private List<TourSpotImage> images = new ArrayList<>();
 
-    private LocalDateTime imagesUpdatedAt;
-
+    private Instant imagesUpdatedAt;
 
     // TourAPI
     private String category1;
@@ -102,7 +101,7 @@ public class TourSpot {
     }
 
     public void updateImagesUpdatedAt() {
-        this.imagesUpdatedAt = LocalDateTime.now();
+        this.imagesUpdatedAt = Instant.now();
     }
 
 }
