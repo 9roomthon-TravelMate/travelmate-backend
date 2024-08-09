@@ -54,6 +54,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(username);
             userDTO.setNickname(oAuth2Response.getName());
+            userDTO.setProfile_image(oAuth2Response.getProfile());
             userDTO.setRole("ROLE_USER");
 
             // 6. OAuth2LoginAuthenticationProvider는 OAuth2User 형식에 맞는 값을 받아 로그인을 진행
@@ -68,6 +69,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(isExist.getUsername());
             userDTO.setNickname(oAuth2Response.getName());
+            userDTO.setProfile_image(oAuth2Response.getProfile());
             userDTO.setRole(isExist.getRole());
 
             // 6. OAuth2LoginAuthenticationProvider는 OAuth2User 형식에 맞는 값을 받아 로그인을 진행

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,12 +16,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import travelmate.backend.jwt.CustomLogoutFilter;
 import travelmate.backend.jwt.JWTFilter;
 import travelmate.backend.jwt.JWTUtil;
 import travelmate.backend.oauth2.CustomSuccessHandler;
+import travelmate.backend.repository.UserRepository;
 import travelmate.backend.service.CustomOAuth2UserService;
+import travelmate.backend.service.UserService;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +38,9 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
     private final JWTUtil jwtUtil;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final Environment env;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -77,18 +85,17 @@ public class SecurityConfig {
 
         //JWTFilter 추가
         http
-                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class);
+                .addFilterAfter(new JWTFilter(jwtUtil, userRepository), OAuth2LoginAuthenticationFilter.class);
 
         http
                 .oauth2Login((oauth2) -> oauth2
-                        // 기본 OAuth2 인증 요청 경로를 정의하는 상수 "/oauth2/authorization"에서 사용자 정의 경로로 커스터마이징
-//                        .authorizationEndpoint(oAuth2 -> oAuth2
-//                                .baseUri("/api/oauth2/authorization"))
-//                        .redirectionEndpoint(oAuth2 -> oAuth2.baseUri("/api/oauth2/code/*"))
-                        //
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(customSuccessHandler));
+
+        String appAdminKey = env.getProperty("spring.security.oauth2.client.registration.kakao.admin-key");
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, userService, appAdminKey), LogoutFilter.class);
 
         http
                 .sessionManagement((session) -> session
