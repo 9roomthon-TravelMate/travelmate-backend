@@ -41,14 +41,14 @@ public class TourSpotController {
     }
 
     @GetMapping("/tourspots")
-    public Page<TourSpotDto> getTourSpots(@ModelAttribute TourSpotQueryRequest queryRequest) {
-        Page<TourSpotDto> tourSpotPage = tourSpotService.findTourSpotsByQuery(queryRequest);
+    public Page<TourSpotSummaryDto> getTourSpots(@ModelAttribute TourSpotQueryRequest queryRequest) {
+        Page<TourSpotSummaryDto> tourSpotPage = tourSpotService.findTourSpotsByQuery(queryRequest);
         return tourSpotPage;
     }
 
     @GetMapping("/tourspots/{tourSpotId}")
-    public TourSpotDetailDto getTourSpotDetail(@PathVariable Long tourSpotId) {
-        TourSpotDetailDto tourSpotDetail = tourSpotService.findTourSpotDetailById(tourSpotId);
+    public TourSpotDetailsDto getTourSpotDetail(@PathVariable Long tourSpotId) {
+        TourSpotDetailsDto tourSpotDetail = tourSpotService.findTourSpotDetailById(tourSpotId);
         return tourSpotDetail;
     }
 
