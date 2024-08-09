@@ -58,7 +58,7 @@ public class CustomLogoutFilter extends GenericFilter {
         // 토큰 null check
         if (access == null) {
 //            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com");
+            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
             return;
         }
 
@@ -67,7 +67,7 @@ public class CustomLogoutFilter extends GenericFilter {
             jwtUtil.isExpired(access);
         } catch (ExpiredJwtException e) {
 //            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com");
+            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
             return;
         }
 
