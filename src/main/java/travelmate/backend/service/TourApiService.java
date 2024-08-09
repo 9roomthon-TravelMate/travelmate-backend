@@ -42,7 +42,7 @@ public class TourApiService {
     private final TourSpotThemeRepository tourSpotThemeRepository;
     private final TourSpotRepository tourSpotRepository;
 
-    @Scheduled(cron = "0 30 4 * * ?")
+    @Scheduled(cron = "0 30 4 * * ?", zone = "Asia/Seoul")
     public void updateTourSpotList() {
         fetchAndUpsertRegions();
         fetchAndUpsertAllDistricts();
