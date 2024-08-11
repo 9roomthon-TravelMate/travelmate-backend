@@ -38,25 +38,12 @@ public class JWTFilter extends OncePerRequestFilter {
             }
         }
 
-        if (authorization == null) {
-
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
-            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
+        if (authorization == null || jwtUtil.isExpired(authorization)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         String token = authorization;
-
-        if (jwtUtil.isExpired(token)) {
-
-            filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
-            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
-            return;
-        }
 
         //토큰에서 사용자 정보 획득
         String username = jwtUtil.getUsername(token);
