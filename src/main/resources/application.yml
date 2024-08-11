@@ -14,3 +14,7 @@ tour-api:
   photo-gallery:
     base-url: ${TOUR_API_PHOTO_GALLERY_BASE_URL}
     service-key: ${TOUR_API_PHOTO_GALLERY_SERVICE_KEY}
+
+
+fastapi:
+  base-url: ${FASTAPI_BASE_URL}

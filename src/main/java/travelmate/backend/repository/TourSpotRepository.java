@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import travelmate.backend.dto.TourSpotForRecommendDTO;
 import travelmate.backend.dto.TourSpotSummaryDto;
 import travelmate.backend.entity.TourSpot;
 
@@ -22,4 +24,9 @@ public interface TourSpotRepository extends JpaRepository<TourSpot, Long> {
     Page<TourSpotSummaryDto> findByFilter(Long regionId, Long districtId, Long themeId, Pageable pageable);
 
     List<TourSpot> findAllByContentIdIn(Iterable<String> contentIds);
+
+    // JPQL을 사용하여 TourSpotDTO로 직접 매핑
+    @Query("SELECT new travelmate.backend.dto.TourSpotForRecommendDTO(t.name, t.address, t.mainThumbnailUrl) " +
+            "FROM TourSpot t WHERE t.contentId IN :contentIds")
+    List<TourSpotForRecommendDTO> findByContentIdIn(@Param("contentIds") List<String> contentIds);
 }

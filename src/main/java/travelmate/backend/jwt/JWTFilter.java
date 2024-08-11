@@ -58,6 +58,7 @@ public class JWTFilter extends OncePerRequestFilter {
         userDTO.setRole(role);
         userDTO.setNickname(member.getNickname());
         userDTO.setProfile_image(member.getProfileImage());
+        userDTO.setId(member.getId());
 
 
         //UserDetails에 회원 정보 객체 담기
