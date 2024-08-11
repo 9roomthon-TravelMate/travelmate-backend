@@ -55,19 +55,9 @@ public class CustomLogoutFilter extends GenericFilter {
             }
         }
 
-        // 토큰 null check
-        if (access == null) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
-            return;
-        }
-
-        // 토큰 만료 check
-        try {
-            jwtUtil.isExpired(access);
-        } catch (ExpiredJwtException e) {
-//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.sendRedirect("http://ec2-43-202-20-181.ap-northeast-2.compute.amazonaws.com/loginPage");
+        // 토큰 null & 만료 check
+        if (access == null || jwtUtil.isExpired(access)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
