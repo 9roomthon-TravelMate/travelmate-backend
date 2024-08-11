@@ -45,4 +45,9 @@ public class CustomOAuth2User implements OAuth2User {
 
     public String getProfileImage() { return userDTO.getProfile_image(); }
 
+    // 사용자 id 가져오기
+    public Long getId() {
+        return userDTO.getId();
+    }
+
 }
