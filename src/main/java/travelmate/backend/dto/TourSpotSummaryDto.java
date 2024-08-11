@@ -1,11 +1,14 @@
 package travelmate.backend.dto;
 
-import travelmate.backend.entity.*;
+import travelmate.backend.entity.TourDistrict;
+import travelmate.backend.entity.TourRegion;
+import travelmate.backend.entity.TourSpot;
+import travelmate.backend.entity.TourSpotThemeDetail;
+import travelmate.backend.projection.TourSpotReviewAggregation;
 
-import java.util.List;
 import java.util.Optional;
 
-public record TourSpotDetailDto(
+public record TourSpotSummaryDto(
         Long id,
         String name,
         String address,
@@ -14,10 +17,10 @@ public record TourSpotDetailDto(
         Long themeId,
         String mainImageUrl,
         String mainThumbnailUrl,
-        String overview,
-        List<TourSpotImageDto> images
+        Long reviewCount,
+        Long ratingSum
 ) {
-    public TourSpotDetailDto(TourSpot tourSpot, TourSpotDetail tourSpotDetail, List<TourSpotImageDto> images) {
+    public TourSpotSummaryDto(TourSpot tourSpot, TourSpotReviewAggregation aggregation) {
         this(
                 tourSpot.getId(),
                 tourSpot.getName(),
@@ -30,8 +33,8 @@ public record TourSpotDetailDto(
                         .map(TourSpotThemeDetail::getId).orElse(null),
                 tourSpot.getMainImageUrl(),
                 tourSpot.getMainThumbnailUrl(),
-                tourSpotDetail.getOverview(),
-                images
+                aggregation.getReviewCount(),
+                aggregation.getRatingSum()
         );
     }
 }

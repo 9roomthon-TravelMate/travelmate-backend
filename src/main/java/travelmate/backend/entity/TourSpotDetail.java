@@ -1,12 +1,12 @@
 package travelmate.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import travelmate.backend.dto.tourApi.item.TourApiTourCommonDetail;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -21,16 +21,12 @@ public class TourSpotDetail {
     @Column(length = 1000)
     private String overview;
 
-    private LocalDateTime updatedAt;
+    @UpdateTimestamp
+    private Instant updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+        this.updatedAt = Instant.now();
     }
 
     public TourSpotDetail(TourApiTourCommonDetail detail) {
