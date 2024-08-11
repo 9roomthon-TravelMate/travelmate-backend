@@ -8,6 +8,11 @@ plugins {
 group = 'travelmate'
 version = '0.0.1-SNAPSHOT'
 
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs << "-parameters"
+}
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)

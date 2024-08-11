@@ -42,15 +42,11 @@ public class Post {
         this.createdAt = LocalDateTime.now();
     }
 
-    /*
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member user;
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    @Column(nullable = true)
+    private Long likecount;
 
-    @OneToMany(mappedBy = "post")
-    private List<Like> likes;
-    */
 }

@@ -1,7 +1,8 @@
 package travelmate.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import travelmate.backend.entity.PostImage;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 

@@ -22,7 +22,6 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
     private String writer;
 
     @Column(nullable = false)
