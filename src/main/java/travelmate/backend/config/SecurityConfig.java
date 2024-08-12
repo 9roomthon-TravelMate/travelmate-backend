@@ -104,12 +104,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> {
-            web.ignoring()
-                    .requestMatchers(HttpMethod.GET,"/tourspot/**")
-                    .requestMatchers(HttpMethod.GET,"/tourspots/**");
-        };
-    }
 }
