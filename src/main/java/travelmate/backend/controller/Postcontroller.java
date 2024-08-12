@@ -13,10 +13,13 @@ import travelmate.backend.service.PostService;
 
 import java.io.IOException;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 @RequestMapping("/post")
 public class Postcontroller {
+    private static final Logger logger = LoggerFactory.getLogger(Postcontroller.class);
 
     @Autowired
     private PostRepository postRepository;
@@ -30,6 +33,7 @@ public class Postcontroller {
             @RequestPart(value = "postdto") PostDto postDto,
             @RequestPart(value = "file", required = false) List<MultipartFile> file) throws IOException {
         Post createdpost = postService.create(user, postDto.getTitle(), postDto.getContent(), postDto.getHashtags(), file);
+        logger.info("Post created successfully: {}", createdpost);
         return ResponseEntity.ok(createdpost);
     }
 
@@ -66,6 +70,7 @@ public class Postcontroller {
     @GetMapping("/community")
     public ResponseEntity<List<CommunityDto>> community() {
         List<CommunityDto> posts = postService.getAllPostsWithDetails();
+        logger.info("Post created successfully: {}", posts);
         return ResponseEntity.ok(posts);
     }
 }
