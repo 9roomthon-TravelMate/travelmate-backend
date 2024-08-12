@@ -3,10 +3,14 @@ package travelmate.backend.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import travelmate.backend.dto.LikeDto;
+import travelmate.backend.dto.MyPagePostsDto;
 import travelmate.backend.entity.Like;
 import travelmate.backend.entity.Post;
 import travelmate.backend.repository.LikeRepository;
 import travelmate.backend.repository.PostRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LikeService {
@@ -65,5 +69,12 @@ public class LikeService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
         return likeRepository.countByPost(post);
+    }
+
+    public List<MyPagePostsDto> getLikedPostsList(Long userId) {
+        List<Post> likedPosts = likeRepository.findLikedPostsByUserId(userId);
+        return likedPosts.stream()
+                .map(post -> new MyPagePostsDto(post.getId(), post.getImages().get(0).getSaveImageName()))
+                .collect(Collectors.toList());
     }
 }

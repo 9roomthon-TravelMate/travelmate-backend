@@ -1,6 +1,7 @@
 package travelmate.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import travelmate.backend.dto.*;
@@ -192,4 +193,11 @@ public class PostService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+
+    public List<MyPagePostsDto> getMyPostsList(Long userId){
+        return postRepository.findPostIdsAndFirstImageByUserId(userId);
+    }
+
+
 }
