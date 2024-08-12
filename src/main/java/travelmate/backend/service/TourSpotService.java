@@ -76,7 +76,7 @@ public class TourSpotService {
         }
 
         Integer pageSize = query.pageSize();
-        if (pageSize == null || pageSize < 10) {
+        if (pageSize == null || pageSize < 1) {
             pageSize = 10;
         } else if (pageSize > 1000) {
             pageSize = 1000;
