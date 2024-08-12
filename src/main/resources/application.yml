@@ -4,6 +4,16 @@ spring:
   profiles:
     active: local
 
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+    servlet:
+      multipart:
+        enabled: true
+
 tour-api:
   korean-info:
     base-url: ${TOUR_API_KOR_INFO_BASE_URL}
