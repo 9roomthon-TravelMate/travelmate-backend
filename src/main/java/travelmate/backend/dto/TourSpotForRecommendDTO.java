@@ -9,4 +9,5 @@ public class TourSpotForRecommendDTO {
     private String name;
     private String address;
     private String mainThumbnailUrl;
+    private String contentId;
 }
