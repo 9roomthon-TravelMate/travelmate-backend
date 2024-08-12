@@ -18,7 +18,7 @@ public class TourSpotDetail {
     @Column(name = "tour_spot_detail_id")
     private Long id;
 
-    @Column(length = 1000)
+    @Column(length = 3000)
     private String overview;
 
     @UpdateTimestamp
