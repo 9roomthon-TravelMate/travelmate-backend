@@ -16,6 +16,7 @@ import travelmate.backend.entity.TourRegion;
 import travelmate.backend.entity.TourSpot;
 import travelmate.backend.entity.TourSpotDetail;
 import travelmate.backend.entity.TourSpotImage;
+import travelmate.backend.projection.TourSpotReviewAggregation;
 import travelmate.backend.repository.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class TourSpotService {
     private final TourSpotThemeRepository tourSpotThemeRepository;
     private final TourSpotDetailRepository tourSpotDetailRepository;
     private final TourSpotImageRepository tourSpotImageRepository;
+    private final TourSpotReviewRepository tourSpotReviewRepository;
 
     public List<TourRegionDto> findAllRegions() {
         return regionRepository.findAll()
@@ -67,7 +69,7 @@ public class TourSpotService {
                 .toList();
     }
 
-    public Page<TourSpotDto> findTourSpotsByQuery(TourSpotQueryRequest query) {
+    public Page<TourSpotSummaryDto> findTourSpotsByQuery(TourSpotQueryRequest query) {
         Integer pageNumber = query.pageNumber();
         if (pageNumber == null || pageNumber < 1) {
             pageNumber = 1;
@@ -82,17 +84,15 @@ public class TourSpotService {
 
         Pageable pageRequest = PageRequest.of(pageNumber - 1, pageSize);
 
-        Page<TourSpot> tourSpotPage = tourSpotRepository.findByFilter(
+        return tourSpotRepository.findByFilter(
                 query.regionId(),
                 query.districtId(),
                 query.themeId(),
                 pageRequest);
-
-        return tourSpotPage.map(TourSpotDto::new);
     }
 
     @Transactional
-    public TourSpotDetailDto findTourSpotDetailById(Long tourSpotId) {
+    public TourSpotDetailsDto findTourSpotDetailById(Long tourSpotId) {
         TourSpot tourSpot = tourSpotRepository.findById(tourSpotId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 관광지입니다."));
 
@@ -138,6 +138,8 @@ public class TourSpotService {
                 .map(TourSpotImageDto::new)
                 .toList();
 
-        return new TourSpotDetailDto(tourSpot, tourSpot.getDetail(), tourSpotImageDtoList);
+        TourSpotReviewAggregation reviewAggregation = tourSpotReviewRepository.aggregateByTourSpotId(tourSpotId);
+
+        return new TourSpotDetailsDto(tourSpot, tourSpot.getDetail(), tourSpotImageDtoList, reviewAggregation);
     }
 }

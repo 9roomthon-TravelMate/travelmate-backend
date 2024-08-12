@@ -7,7 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import travelmate.backend.dto.tourApi.item.TourApiTourInfo;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,12 @@ public class TourSpot {
 
     private String address;
 
+    @Column(precision = 12, scale = 10)
+    private BigDecimal latitude;
+
+    @Column(precision = 13, scale = 10)
+    private BigDecimal longitude;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tour_region_id")
     private TourRegion region;
@@ -61,8 +68,7 @@ public class TourSpot {
     @OneToMany(mappedBy = "tourSpot")
     private List<TourSpotImage> images = new ArrayList<>();
 
-    private LocalDateTime imagesUpdatedAt;
-
+    private Instant imagesUpdatedAt;
 
     // TourAPI
     private String category1;
@@ -78,6 +84,8 @@ public class TourSpot {
         this.contentTypeId = tourApiTourInfo.contenttypeid();
         this.name = tourApiTourInfo.title();
         this.address = tourApiTourInfo.addr1();
+        this.latitude = new BigDecimal(tourApiTourInfo.mapy());
+        this.longitude = new BigDecimal(tourApiTourInfo.mapx());
         this.mainImageUrl = tourApiTourInfo.firstimage();
         this.mainThumbnailUrl = tourApiTourInfo.firstimage2();
         this.category1 = tourApiTourInfo.cat1();
@@ -93,7 +101,7 @@ public class TourSpot {
     }
 
     public void updateImagesUpdatedAt() {
-        this.imagesUpdatedAt = LocalDateTime.now();
+        this.imagesUpdatedAt = Instant.now();
     }
 
 }

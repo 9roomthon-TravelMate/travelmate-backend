@@ -1,29 +1,37 @@
 package travelmate.backend.dto;
 
-import travelmate.backend.entity.TourDistrict;
-import travelmate.backend.entity.TourRegion;
-import travelmate.backend.entity.TourSpot;
-import travelmate.backend.entity.TourSpotThemeDetail;
+import org.springframework.data.domain.Page;
+import travelmate.backend.entity.*;
+import travelmate.backend.projection.TourSpotReviewAggregation;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
-public record TourSpotDto(
+public record TourSpotDetailsDto(
         Long id,
         String name,
         String address,
+        BigDecimal latitude,
+        BigDecimal longitude,
         Long regionId,
         Long districtId,
         Long themeId,
         String mainImageUrl,
         String mainThumbnailUrl,
-        Double rating,
-        Long reviewCount
+        String overview,
+        List<TourSpotImageDto> images,
+        Long reviewCount,
+        Long ratingSum
 ) {
-    public TourSpotDto(TourSpot tourSpot) {
+    public TourSpotDetailsDto(TourSpot tourSpot, TourSpotDetail tourSpotDetail, List<TourSpotImageDto> images,
+                              TourSpotReviewAggregation reviewAggregation) {
         this(
                 tourSpot.getId(),
                 tourSpot.getName(),
                 tourSpot.getAddress(),
+                tourSpot.getLatitude(),
+                tourSpot.getLongitude(),
                 Optional.ofNullable(tourSpot.getRegion())
                         .map(TourRegion::getId).orElse(null),
                 Optional.ofNullable(tourSpot.getDistrict())
@@ -32,8 +40,10 @@ public record TourSpotDto(
                         .map(TourSpotThemeDetail::getId).orElse(null),
                 tourSpot.getMainImageUrl(),
                 tourSpot.getMainThumbnailUrl(),
-                null,
-                0L
+                tourSpotDetail.getOverview(),
+                images,
+                reviewAggregation.getReviewCount(),
+                reviewAggregation.getRatingSum()
         );
     }
 }

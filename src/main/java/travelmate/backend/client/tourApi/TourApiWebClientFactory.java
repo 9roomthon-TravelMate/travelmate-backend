@@ -1,7 +1,9 @@
 package travelmate.backend.client.tourApi;
 
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -11,13 +13,20 @@ import java.util.Map;
 
 
 @Component
-@RequiredArgsConstructor
 public class TourApiWebClientFactory {
-
-    private final WebClient.Builder webClientBuilder;
 
     @Value("${spring.application.name}")
     private String appName;
+
+    private final WebClient.Builder webClientBuilder;
+    private final ObjectMapper objectMapper;
+
+    public TourApiWebClientFactory(WebClient.Builder webClientBuilder, ObjectMapper objectMapper) {
+        this.webClientBuilder = webClientBuilder;
+        this.objectMapper = objectMapper
+                .copy()
+                .configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+    }
 
     public WebClient create(String baseUrl, String serviceKey) {
         UriComponentsBuilder uriComponentsBuilder = createUriComponentsBuilder(baseUrl, serviceKey);
@@ -26,7 +35,10 @@ public class TourApiWebClientFactory {
         return webClientBuilder
                 .clone()
                 .uriBuilderFactory(uriBuilderFactory)
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(50*1024*1024))
+                .codecs(clientCodecConfigurer -> {
+                    clientCodecConfigurer.defaultCodecs().maxInMemorySize(50 * 1024 * 1024);
+                    clientCodecConfigurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
+                })
                 .build();
     }
 
