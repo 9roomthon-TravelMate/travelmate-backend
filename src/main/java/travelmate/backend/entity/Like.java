@@ -20,9 +20,9 @@ public class Like {
     private Long id;
 
 //    유저랑 연동하면 추가
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;  // 사용자 엔티티
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Member user;  // 사용자 엔티티
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
