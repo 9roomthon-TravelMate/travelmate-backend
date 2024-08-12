@@ -26,7 +26,8 @@ public interface TourSpotRepository extends JpaRepository<TourSpot, Long> {
     List<TourSpot> findAllByContentIdIn(Iterable<String> contentIds);
 
     // JPQL을 사용하여 TourSpotDTO로 직접 매핑
-    @Query("SELECT new travelmate.backend.dto.TourSpotForRecommendDTO(t.name, t.address, t.mainThumbnailUrl) " +
+    @Query("SELECT new travelmate.backend.dto.TourSpotForRecommendDTO(t.name, t.address, t.mainThumbnailUrl, t.contentId) " +
             "FROM TourSpot t WHERE t.contentId IN :contentIds")
     List<TourSpotForRecommendDTO> findByContentIdIn(@Param("contentIds") List<String> contentIds);
+
 }
