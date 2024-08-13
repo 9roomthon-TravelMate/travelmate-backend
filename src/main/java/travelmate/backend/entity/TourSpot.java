@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 import travelmate.backend.dto.tourApi.item.TourApiTourInfo;
 
 import java.math.BigDecimal;
@@ -20,7 +21,9 @@ import java.util.List;
         @Index(name = "nameIndex", columnList = "name"),
         @Index(name = "tourSpotThemeIndex", columnList = "tour_spot_theme_id"),
         @Index(name = "regionIndex", columnList = "tour_region_id"),
-        @Index(name = "districtIndex", columnList = "tour_district_id")
+        @Index(name = "districtIndex", columnList = "tour_district_id"),
+        @Index(name = "mainImageUrlIndex", columnList = "main_image_url"),
+        @Index(name = "mainThumbnailUrlIndex", columnList = "main_thumbnail_url"),
 })
 public class TourSpot {
 
@@ -86,8 +89,8 @@ public class TourSpot {
         this.address = tourApiTourInfo.addr1();
         this.latitude = new BigDecimal(tourApiTourInfo.mapy());
         this.longitude = new BigDecimal(tourApiTourInfo.mapx());
-        this.mainImageUrl = tourApiTourInfo.firstimage();
-        this.mainThumbnailUrl = tourApiTourInfo.firstimage2();
+        this.mainImageUrl = StringUtils.hasText(tourApiTourInfo.firstimage()) ? tourApiTourInfo.firstimage() : null;
+        this.mainThumbnailUrl = StringUtils.hasText(tourApiTourInfo.firstimage2()) ? tourApiTourInfo.firstimage2() : null;
         this.category1 = tourApiTourInfo.cat1();
         this.category2 = tourApiTourInfo.cat2();
         this.category3 = tourApiTourInfo.cat3();

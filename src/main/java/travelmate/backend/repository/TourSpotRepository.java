@@ -20,7 +20,10 @@ public interface TourSpotRepository extends JpaRepository<TourSpot, Long> {
             "WHERE (:regionId IS NULL OR ts.region.id = :regionId) " +
             "AND (:districtId IS NULL OR ts.district.id = :districtId) " +
             "AND ((:themeId is null AND ts.themeDetail.id is not null) OR ts.themeDetail.id = :themeId) " +
-            "GROUP BY ts.id")
+            "GROUP BY ts.id " +
+            "ORDER BY CASE WHEN ts.mainImageUrl IS NULL OR ts.mainImageUrl = '' " +
+            "OR ts.mainThumbnailUrl IS NULL OR ts.mainThumbnailUrl = '' THEN 1 ELSE 0 END, " +
+            "ts.mainImageUrl ASC, ts.mainThumbnailUrl ASC")
     Page<TourSpotSummaryDto> findByFilter(Long regionId, Long districtId, Long themeId, Pageable pageable);
 
     List<TourSpot> findAllByContentIdIn(Iterable<String> contentIds);
