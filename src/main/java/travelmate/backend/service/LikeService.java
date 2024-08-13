@@ -73,8 +73,23 @@ public class LikeService {
 
     public List<MyPagePostsDto> getLikedPostsList(Long userId) {
         List<Post> likedPosts = likeRepository.findLikedPostsByUserId(userId);
+
+        // 조회된 게시물을 MyPagePostsDto로 변환
         return likedPosts.stream()
-                .map(post -> new MyPagePostsDto(post.getId(), post.getImages().get(0).getSaveImageName()))
+                .map(post -> {
+                    // 첫 번째 이미지를 가져오기 위해 post.getImages().get(0)을 사용
+                    String imageUri = (post.getImages() != null && !post.getImages().isEmpty())
+                            ? post.getImages().get(0).getSaveImageName()
+                            : null;
+
+                    return new MyPagePostsDto(
+                            post.getId(),
+                            imageUri,
+                            post.getTitle(),
+                            post.getContent(),
+                            post.getCreatedAt()
+                    );
+                })
                 .collect(Collectors.toList());
     }
 }
