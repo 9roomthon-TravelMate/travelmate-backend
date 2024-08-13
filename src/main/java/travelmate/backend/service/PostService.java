@@ -196,7 +196,7 @@ public class PostService {
 
 
     public List<MyPagePostsDto> getMyPostsList(Long userId){
-        return postRepository.findPostIdsAndFirstImageByUserId(userId);
+        return postRepository.findPostDetailsByUserId(userId);
     }
 
 
