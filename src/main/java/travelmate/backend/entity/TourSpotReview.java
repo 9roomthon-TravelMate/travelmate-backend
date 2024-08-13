@@ -13,7 +13,10 @@ import java.time.Instant;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-@Table(indexes = @Index(name = "ratingIndex", columnList = "rating"))
+@Table(indexes = {
+        @Index(name = "ratingIndex", columnList = "rating"),
+        @Index(name = "uniqueReviewPerTourSpotAndMemberIndex", columnList = "tour_spot_id, member_id", unique = true),
+})
 public class TourSpotReview {
 
     @Id
