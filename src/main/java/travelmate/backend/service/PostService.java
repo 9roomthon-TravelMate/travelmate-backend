@@ -140,8 +140,8 @@ public class PostService {
     }
 
 
-    public void delete(PostDeleteDto postDeleteDto) {
-        Optional<Post> optionalPost = postRepository.findById(postDeleteDto.getId());
+    public void delete(Long postId) {
+        Optional<Post> optionalPost = postRepository.findById(postId);
         if (!optionalPost.isPresent()) {
             throw new RuntimeException("Post not found");
         }

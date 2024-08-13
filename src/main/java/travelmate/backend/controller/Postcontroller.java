@@ -63,8 +63,8 @@ public class Postcontroller {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteepost(@RequestParam("postid")PostDeleteDto postDeleteDto) {
-        postService.delete(postDeleteDto);
+    public ResponseEntity<String> deletepost(@RequestParam("postid") Long postId) {
+        postService.delete(postId);
         return ResponseEntity.ok("delete");
     }
 
