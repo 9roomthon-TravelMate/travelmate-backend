@@ -1,11 +1,14 @@
 package travelmate.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import travelmate.backend.dto.LikeDto;
 import travelmate.backend.service.LikeService;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/like")
@@ -15,7 +18,9 @@ public class Likecontroller {
     private LikeService likeService;
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addlike(@RequestBody LikeDto likeDto) {
+    public ResponseEntity<Void> addlike(@RequestParam("likeDto") String likeDtoJson) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        LikeDto likeDto = objectMapper.readValue(likeDtoJson, LikeDto.class);
         likeService.addLike(likeDto);
         //likeService.addLike(likeDto.getPostId(), likeDto.getUserId());
         return ResponseEntity.ok().build();
@@ -23,7 +28,9 @@ public class Likecontroller {
 
     // 좋아요 취소
     @PostMapping("/remove")
-    public ResponseEntity<Void> removeLike(@RequestBody LikeDto likeDto) {
+    public ResponseEntity<Void> removeLike(@RequestParam("likeDto") String likeDtoJson) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        LikeDto likeDto = objectMapper.readValue(likeDtoJson, LikeDto.class);
         likeService.removeLike(likeDto);
         return ResponseEntity.ok().build();
     }
