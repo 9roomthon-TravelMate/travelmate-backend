@@ -1,5 +1,6 @@
 package travelmate.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,10 +28,14 @@ public class Postcontroller {
     @PostMapping("/create")
     public ResponseEntity<Post> createpost(
             @AuthenticationPrincipal CustomOAuth2User user,
-            @RequestPart(value = "postdto") PostDto postDto,
-            @RequestPart(value = "file", required = false) List<MultipartFile> file) throws IOException {
-        Post createdpost = postService.create(user, postDto.getTitle(), postDto.getContent(), postDto.getHashtags(), file);
-        return ResponseEntity.ok(createdpost);
+            @RequestParam("postDto") String postDtoJson,
+            @RequestPart(value = "file", required = false) List<MultipartFile> files) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        PostDto postDto = objectMapper.readValue(postDtoJson, PostDto.class);
+
+        Post createdPost = postService.create(user, postDto.getTitle(), postDto.getContent(), postDto.getHashtags(), files);
+        return ResponseEntity.ok(createdPost);
     }
 
     @PutMapping("/update")
@@ -68,4 +73,6 @@ public class Postcontroller {
         List<CommunityDto> posts = postService.getAllPostsWithDetails();
         return ResponseEntity.ok(posts);
     }
+
+
 }
